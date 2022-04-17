@@ -1,0 +1,56 @@
+
+Modèles # Ce sont des modèles dont la plupart ont été hérités du prédécesseur du projet (audible-us-2)
+Une interface CRUD sera utilisé pour gérer les entités
+
+BOOK
+id
+file
+content
+
+READING_EXTRACT			# Une nouvelle entité
+id
+book_id
+line_from				# Utilisé ultérieurement pour la liste des mots à apprendre
+line_to					# ...
+
+WORD_TOKEN				# Pour ne pas encombrer le stockage, seule les mots difficiles (hard_tokens) seront inclus dans la BDD
+id
+token
+stem
+definitions 			# Une brève description (édité à la manière du fichier excel)
+tokenize(sentence)
+
+
+WORD_OCCURRENCE
+id
+token_id
+book_id
+line_id					# Sentence_id sera remplacé par line_id
+tokenize(extract)
+
+==========
+USE CASES				# Les use cases devront être indépendant entre eux
+A. CRUD
+B. SIMULATION D'UN CAS DE LECTURE		# Configuré en test automatique,
+	1. Ajout d'un livre 				# redondant avec le crud précédement mis en place
+	2. Ajout de l'extrait de lecture	# idem que pour B.1.
+	3. Obtention des mots
+	4. Choix des mots difficiles
+	5. Editions des définitions
+
+==========
+A FAIRE
+1. Gestion des entités (crud)
+2. Use case
+
+
+-------
+Fonctionnement
+
+On apprends tous les mots qui partagent une même racine
+La sélection des mots difficile se fait par les tokens (et non par les racines)
+
+sélection des vocabulaire à apprendre par l'intermédiaire des racines
+enregistrement des vocabulaires apprises par token
+
+!!! Édition des définitions anciennement utilisé pour les nouveaux mots (inclure dans les test)
