@@ -23,6 +23,13 @@ class WordToken:
         self.id = id
         self.definitions = definitions
 
+        # A practical functionnality that helps a lot
+        if self.id is None and self.definitions is None:
+            dup = WordToken.from_db_fetch_from_token(self.token)
+            if dup is not None:
+                self.id = dup.id
+                self.definitions = dup.definitions
+
     def persist(self):
         db = DatabaseService.get_instance()
         if self.id is None:
@@ -93,7 +100,7 @@ class WordToken:
         db = DatabaseService.get_instance()
         rows = db.execute_select("SELECT id, token, stem, definitions FROM word_token WHERE token = ?", (token, ))
         if len(rows) == 0:
-            raise Exception("Token not found")
+            return None
         else:
             row = rows[0]
             return WordToken._from_sqlite_plain_tuple(row)

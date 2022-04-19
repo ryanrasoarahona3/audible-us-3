@@ -94,6 +94,19 @@ class MyTestCase(unittest.TestCase):
         word_windshield_3 = WordToken.from_db_fetch_from_token("windshield")
         self.assertEqual(word_windshield_3.definitions, "parebrise, pare-vent")
 
+    def test_token_unicity(self):
+        self.init_db()
+        token1 = WordToken("windscreen")
+        token1.persist()
+
+        token2 = WordToken("windscreen")
+        token2.definitions = "Pare-brise"
+        token2.persist()
+        self.assertEqual(token1.id, token2.id)
+
+        token3 = WordToken.from_db_fetch_from_id(token1.id)
+        self.assertEqual(token3.definitions, "Pare-brise")
+
 
 if __name__ == '__main__':
     unittest.main()

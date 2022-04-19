@@ -12,6 +12,13 @@ class Book:
         self.file = file
         self.content = content
 
+    # Un peu particulière en raison de l'attachement de l'objet Content à l'entité
+    def load_content(self):
+        db = DatabaseService.get_instance()
+        sql = "SELECT content from BOOK where id=?"
+        res = db.execute_select(sql, (str(self.id),))
+        self.content = res[0][0]
+
     def persist(self):
         db = DatabaseService.get_instance()
         if self.id is None: # insert
@@ -43,7 +50,7 @@ class Book:
         return Book(
             id=tuple[0],
             file=tuple[1],
-            content=""
+            content=None
         )
 
     @staticmethod
