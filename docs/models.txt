@@ -54,3 +54,9 @@ sélection des vocabulaire à apprendre par l'intermédiaire des racines
 enregistrement des vocabulaires apprises par token
 
 !!! Édition des définitions anciennement utilisé pour les nouveaux mots (inclure dans les test)
+
+======
+
+En utilisant des cas de tets
+Enregistrer les word_occurrence
+Pour la séléction des phrases à réviser, utiliser les racines

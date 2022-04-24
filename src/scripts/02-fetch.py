@@ -14,13 +14,14 @@ def review_1():
     book_lines = powersat_book.content.split("\n")
 
     # Empty word_token
-    db.get_cursor().execute("DELETE FROM word_token")
+    #db.get_cursor().execute("DELETE FROM word_token")
     # Empty extract
-    db.get_cursor().execute("DELETE FROM extract")
+    #db.get_cursor().execute("DELETE FROM extract")
+    line_from=4078
     extract = Extract(
         book_id=powersat_book.id,
-        line_from=914,
-        line_to=919
+        line_from=line_from,
+        line_to=line_from+400
     )
     extract.persist()
 
@@ -29,13 +30,21 @@ def review_1():
     tsv_lines = []
     for occurrence in occurrences:
         occurrence.token
-        tsv_lines.append([
+        sentence = book_lines[occurrence.line_id]
+        sentence = sentence.split(".")
+        sentence = [s for s in sentence if occurrence.token.token in s.lower()][0] + "."
+        line_array = [
             powersat_book.file,
             str(occurrence.line_id),
-            book_lines[occurrence.line_id],
+            sentence,
             occurrence.token.token,
-            occurrence.token.stem
-        ])
+            occurrence.token.stem,
+            ""
+        ]
+        if occurrence.token.definitions is not None:
+            line_array[5] = occurrence.token.definitions
+        tsv_lines.append(line_array)
+
     tsv_content = "\n".join(["\t".join(l) for l in tsv_lines])
     with open("../../data/tsv/000.tsv", "w", encoding="utf8") as f:
         f.write(tsv_content)

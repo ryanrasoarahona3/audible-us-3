@@ -13,7 +13,7 @@ if __name__ == '__main__':
     with open("../../data/tsv/000.tsv", "r", encoding="utf8") as f:
         data = f.read()
         data = data.split("\n")
-        data = [l.split("\t") for l in data if data != ""]
+        data = [l.strip().split("\t") for l in data if data != ""]
 
     book_file = data[0][0]
     book = [book for book in Book.from_db_fetch_all() if book.file == book_file][0]
